@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Serviço para executar os testes
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/app
+      - go-modules:/go/pkg/mod
+    working_dir: /app
+    command: go test -v -cover ./...
+    environment:
+      - CGO_ENABLED=0
+    networks:
+      - lab01-network
+
+  # Serviço para executar os testes com cobertura detalhada
+  test-coverage:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/app
+      - go-modules:/go/pkg/mod
+    working_dir: /app
+    command: >
+      sh -c "
+        go test -v -coverprofile=coverage.out ./... &&
+        go tool cover -html=coverage.out -o coverage.html &&
+        echo 'Cobertura gerada em coverage.html'
+      "
+    environment:
+      - CGO_ENABLED=0
+    networks:
+      - lab01-network
+
+  # Serviço para executar a aplicação (opcional)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - lab01-network
+    command: ./cloudrun
+
+volumes:
+  go-modules:
+    driver: local
+
+networks:
+  lab01-network:
+    driver: bridge
+

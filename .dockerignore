@@ -1,0 +1,43 @@
+# Binários
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+cloudrun
+
+# Arquivos de teste
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Arquivos do Go
+vendor/
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+Dockerfile.test
+docker-compose.yml
+.dockerignore
+
+# Documentação
+*.md
+README*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
